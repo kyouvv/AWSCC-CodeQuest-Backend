@@ -1,7 +1,7 @@
 def sorter(name_list):
     name_list.sort()
     for i in range(len(name_list)):
-        print(f"{i}. {name_list[i].strip()}")
+        print(f"{i + 1}. {name_list[i].strip()}")
 
 def fileRead():
     global students
