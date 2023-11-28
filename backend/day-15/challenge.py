@@ -2,11 +2,10 @@ import json, os
 
 class PasswordManage():
     def __init__(self) -> None:
-        self.path = 'C:/Users/allen/Music/Codequest/AWSCC-CodeQuest-Backend/backend/day-15/data.json'
+        self.path = './backend/day-15/data.json'
         self.data = {}
-        self.websites = []
         self.userChoice = ''
-        pass
+        self.openFile()
 
     def generateUI(self):
         print("Password Manager:\n1. Add Password\n2. View all Password\n3. Search for Website\n4. Delete Input\n5. Update a Password\n6. Quit")
@@ -39,7 +38,6 @@ class PasswordManage():
             try:
                 with open(self.path, 'r') as f:
                     self.data = json.load(f)
-                    self.websites = list(self.data.keys())
             except json.decoder.JSONDecodeError:
                 print("Error decoding JSON. File might be empty or not in valid JSON format.")
                 self.data = {}
@@ -49,6 +47,7 @@ class PasswordManage():
             json.dump(self.data, f, indent=4)
     
     def addPassword(self):
+        os.system('cls')
         print('\n Add Password \n')
         website = input("Enter website:")
         id = 1
@@ -64,20 +63,17 @@ class PasswordManage():
             password = input("Enter Password: ")
             self.data[website] = [{'id' : id, 'email' : email, 'password' : password}]
         self.saveFile()
-        self.generateUI()
-        pass
 
     def viewPasswords(self):
-        self.openFile()
+        os.system('cls')
         print('\n View Password \n')
         print("Passwords:\n")
         for websites, credentials in self.data.items():
             for credential in credentials:
                 print(f" Website: {websites}\n Id: {credential['id']}\n Email: {credential['email']}\n Password: {credential['password']}\n")
-        self.generateUI()
     
     def searchPasswords(self):
-        self.openFile()
+        os.system('cls')
         print('\n Search Password \n') 
         website = input("\nEnter Website to search: ") 
         if website in self.data:
@@ -85,26 +81,60 @@ class PasswordManage():
             for credential in self.data[website]:
                 print(f"ID: {credential['id']}\n Email: {credential['email']}\n Password: {credential['password']}\n")
             print('\n')
-        self.generateUI()
-        pass
+        else:
+            print("Website does not exist.\n")
+
 
     def deletePassword(self):
+        os.system('cls')
         print('\n Delete Password \n')
         website = input("Enter website: ")
-        if website in self.data:
-            if len(self.data[website]) > 1:
-                pass
-            else:
-                pass
+        results = self.getWebsite(website, True)
+        if results:
+            id_to_rmove, credentials = results
+            updatedCreds = []
+            for credential in credentials:
+                if id_to_rmove != credential['id']:
+                    updatedCreds.append(credential)
+                    self.data[website] = updatedCreds
+                    self.saveFile()
                 
-        self.generateUI()
-        pass
-
     def updatePassword(self):
+        os.system('cls')
         print('\n Update Password \n')
-        self.generateUI()
-        pass
+        website = input("Enter Website: ")
+        result = self.getWebsite(website, True)
+        if result:
+            id_to_update, credentials = result
+            for credential in credentials:
+                if credential['id'] == id_to_update:
+                    new_email = input("Enter new Email (leave blank to keep the current one): ")
+                    new_password = input("Enter new Password (leave blank to keep the current one): ")
+                if new_email:
+                    credential['email'] = new_email
+                if new_password:
+                    credential['password'] = new_password
+            print("Password updated successfully!\n")
+            self.saveFile()
 
+    def getWebsite(self, website, needID):
+        if website in self.data:
+            credentials = self.data[website]
+            for credential in credentials:
+                print(f"Website: {website}\nID: {credential['id']}\nEmail: {credential['email']}\nPassword: {credential['password']}\n")
+                if needID:
+                    while True:
+                        try:
+                            id_to_update = int(input("Enter ID:"))
+                            break
+                        except:
+                            print("Enter Valid Value.")
+                    return id_to_update, credentials
+        else:
+            print('Website does not exist.\n')
 
 app = PasswordManage()
-app.generateUI()
+while True:
+    app.generateUI()
+    if app.userChoice == '6':
+        break
