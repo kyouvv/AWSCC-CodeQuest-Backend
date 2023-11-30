@@ -80,7 +80,6 @@ class PasswordManage():
             print(f"Website: {website}\n")
             for credential in self.data[website]:
                 print(f"ID: {credential['id']}\n Email: {credential['email']}\n Password: {credential['password']}\n")
-            print('\n')
         else:
             print("Website does not exist.\n")
 
@@ -96,8 +95,8 @@ class PasswordManage():
             for credential in credentials:
                 if id_to_rmove != credential['id']:
                     updatedCreds.append(credential)
-                    self.data[website] = updatedCreds
-                    self.saveFile()
+            self.data[website] = updatedCreds
+            self.saveFile()
                 
     def updatePassword(self):
         os.system('cls')

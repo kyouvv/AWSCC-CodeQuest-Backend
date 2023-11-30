@@ -2,15 +2,9 @@
     "youtube": [
         {
             "id": 1,
-            "email": "yy",
-            "password": "test"
+            "email": "allenalcorano@gmail.com",
+            "password": "rerree2"
         }
     ],
-    "testing": [
-        {
-            "id": 1,
-            "email": "wowie",
-            "password": "wowowin"
-        }
-    ]
+    "testing": []
 }
