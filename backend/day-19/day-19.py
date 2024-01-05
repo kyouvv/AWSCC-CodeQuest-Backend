@@ -1,18 +1,19 @@
 import requests
 
-# API endpoint (example using JSONPlaceholder API)
-api_url = "https://jsonplaceholder.typicode.com/posts/1"
+base_url = 'https://api.spacexdata.com/v5/launches/latest'
 
-# Sending a GET request
-response = requests.get(api_url)
+response = requests.get(base_url)
 
-# Handling the response
 if response.status_code == 200:
-    # Response content as JSON
-    data = response.json()
-    title = data["title"]
-    body = data["body"]
-    print(f"Title: {title}")
-    print(f"Body: {body}")
+  # Parse JSON content from the response
+  launch_data = response.json()
+
+  # Display launch information
+  print(f"Name: {launch_data['name']}")
+  print(f"Details: {launch_data['details']}")
+  print(f"Launchpad ID: {launch_data['launchpad']}")
+  print(f"Flight Number:{launch_data['flight_number']}")
+  print(f"Date UTC: {launch_data['date_utc']}")
+  print(f"Upcoming: {launch_data['upcoming']}")
 else:
-    print(f"Request failed with status code: {response.status_code}")
+  print("ERROR Could not Retrieve Information")
