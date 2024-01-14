@@ -1,0 +1,17 @@
+{% include 'base.html' %}
+<body>
+    <div class="container d-flex h-100">
+        <form class="form-horizontal" method="post" action="{{url_for('add')}}">
+            <div class="form-group">
+                <label class="control-label" for="Website">Website:</label>
+                <input class="form-control" type="text" id="Website" name="website">
+                <label class="control-label" for="email">Username / Email:</label>
+                <input class="form-control" type="text" id="email" name="email">
+                <label lass="control-label" for="password">Password:</label>
+                <input class="form-control" type="text" id="password" name="password">
+                <input type="submit" value="Submit">
+                <input formmethod="get" formaction="{{ url_for("index") }}" type="submit" value="Back">
+            </div>
+        </form>
+    </div>
+</body>

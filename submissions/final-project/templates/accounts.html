@@ -1,0 +1,29 @@
+{% include 'base.html' %}
+    {% set websites = {} %}
+<div class="container center-block">
+    <h1 class="text text-block text-center">Password Manager</h1>
+    {% for user in users %}
+        {% set website = user.website %}
+        {% if website not in websites %}
+            <h1 class="text text-center text-block">Website: {{ website }}</h1>
+            <ul class="list-group">
+                {% for u in users if u.website == website %}
+                    <div class="container">
+                        <li class="list-group-item"> Username: {{ u.username }}</li>
+                        <li class="list-group-item">Password: {{ u.password }}</li>
+                        <form class="forms" method="post" action="{{ url_for('remove', id=u.id) }}" style="display:inline;">
+                            <input class="btn btn-danger" type="submit" value="Remove">
+                            <input class="btn btn-info" formmethod="get" type="submit" value="Edit" formaction="{{ url_for('edit', id=u.id) }}">
+                            </form>
+                    </div>
+                {% endfor %}
+            </ul>
+            {% set _ = websites.update({website: True}) %}
+        {% endif %}
+    {% endfor %}
+    {% if not users %}
+        <h2 class="text text-center text-block">No Accounts can be displayed.</h2>
+    {% endif %}
+    <form action="{{url_for('add')}}"><input class="btn btn-lg btn-success btn-block"  type="submit" value="Add"></form>
+</div>
+
